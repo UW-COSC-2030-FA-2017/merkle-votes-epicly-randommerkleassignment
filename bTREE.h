@@ -34,4 +34,3 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
     
 };
-
