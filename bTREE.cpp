@@ -1,5 +1,5 @@
 #include "bTREE.h"
-
+#include <queue>
 
 //look at descriptions in pMT.h for guidance on what you might need for these function to actually do
 bTREE::bTREE()
@@ -14,19 +14,7 @@ bTREE::~bTREE()
 
 void bTREE::destroy(bTREE * & subtree)
 {
-	if (subtree != NULL)
-
-	{
-
-		destroy(subtree->left);
-
-		destroy(subtree->right);
-
-		delete subtree;
-
-		subtree = NULL;
-
-	}
+	
 }
 
 int bTREE::dataInserted()
@@ -39,13 +27,13 @@ int bTREE::numberOfNodes()
 	return size(tree);
 }
 
-int bTREE::size(const bTREE * subtree)
+int bTREE::size()
 {
-	if (subtree == NULL)
+	if (tree == NULL)
 	{
 		return 0;
 	}
-	return(size(subtree->left) + 1 + size(subtree->right));
+	return(size(tree->left) + 1 + size(tree->right));
 }
 
 int bTREE::leaves(const bTREE * subtree)
@@ -67,11 +55,14 @@ int bTREE::leaves(const bTREE * subtree)
 
 int bTREE::insert(string data, int time)
 {
-	if (tree->entry == Hash(tree->entry))
+	treeNode * A = new treeNode();
+	A->data = data;
+	A->time = time;
+	A->nodeLeft == NULL;
+	A->nodeRight == NULL;
+	if (tree == NULL)
 	{
-		left->entry = tree->entry;
-		right->entry = data;
-		tree->entry = (Hash(left->entry) + Hash(right->entry));
+		tree = A;
 	}
 	return 1;
 }

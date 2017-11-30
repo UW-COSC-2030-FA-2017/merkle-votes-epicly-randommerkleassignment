@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <queue>
 using namespace std;
 
 class bTREE
@@ -7,18 +8,17 @@ class bTREE
 	struct treeNode {
 		string data;
 		int time;
-		treeNode * nodeLeft;
-		treeNode * nodeRight;
+		treeNode * left;
+		treeNode * right;
 	};
+	queue <treeNode> queueNode;
 
 private:
 	//some data structure to hold your treeNodes together ...
 	//DATASTUCTURE treeNodes tree;
 	//any helper private variables you need
 	string entry;
-    bTREE * left;
-	bTREE * right;
-	bTREE * tree;
+	treeNode * tree; 
 
 public:
 	bTREE();
@@ -28,7 +28,7 @@ public:
 
 	int dataInserted();
 	int numberOfNodes();
-	int size(const bTREE * subtree);
+	int size();
 
 	int leaves(const bTREE * subtree);
 
