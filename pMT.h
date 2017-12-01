@@ -3,25 +3,26 @@
 #define PMT_H
 #include "bTREE.h"
 #include <string>
+#include <sstream>
 using namespace std;
 using std::string;
 class pMT : public bTREE
 {
 private:
 	int selectedHash;
-	//bTREE myMerkle;
+	bTREE myMerkle;
 
 	string hash_1(string);
 	string hash_2(string);
 	string hash_3(string);
 	template< typename T >
-	std::string intToHex(T i)
+	int StringToInt(string x)
 	{
-		std::stringstream stream;
-		stream << "0x"
-			<< std::setfill('0') << std::setw(sizeof(T) * 2)
-			<< std::hex << i;
-		return stream.str();
+		string s = x;
+		stringstream temp(s);
+		int y = 0;
+		temp >> y;
+		return y;
 	}
 
 

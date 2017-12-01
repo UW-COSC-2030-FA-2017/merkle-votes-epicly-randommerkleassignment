@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 using std::sort;
 using std::vector;
@@ -37,8 +38,8 @@ int pMT::insert(string vote, int time)
 	treeNode * A = new treeNode();
 	A->data = vote;
 	A->time = time;
-	A->left == NULL;
-	A->right == NULL;
+	A->left = NULL;
+	A->right = NULL;
 	if (tree == NULL)
 	{
 		tree = A;
@@ -46,12 +47,12 @@ int pMT::insert(string vote, int time)
 	}
 	else if (queueNode.front()->left == NULL)
 	{
-		queueNode.front()->left == A;
+		queueNode.front()->left = A;
 		queueNode.push(A);
 	}
 	else if (queueNode.front()->right == NULL)
 	{
-		queueNode.front()->right == A;
+		queueNode.front()->right = A;
 		queueNode.push(A);
 		queueNode.pop();
 	}
@@ -77,7 +78,11 @@ int pMT::findHash(string mhash)
 * @return 0 if not found, else number of opperations required to find the matching hash
 */
 {
-	return find(mhash);
+	if (myMerkle.find(mhash))
+	{
+		return myMerkle.numOperations();
+	}
+
 }
 
 
@@ -88,7 +93,7 @@ string pMT::locateData(string vote)
 * @return sequence of L's and R's comprising the movement to the leaf node; else return a dot '.'
 */
 {
-	return locate(vote);
+	return myMerkle.locate(vote);
 }
 
 string pMT::locateHash(string mhash)
@@ -98,7 +103,7 @@ string pMT::locateHash(string mhash)
 * @return sequence of L's and R's comprising the movement to the hash node, ; else return a dot '.'
 */
 {
-	return locate(mhash);
+	return myMerkle.locate(mhash);
 }
 
 string pMT::locate(string)
@@ -132,7 +137,7 @@ string pMT::hash_1(string key)
 		hash ^= ((hash << 5) + (*str) + (hash >> 2));
 	}
 
-	return intToHex(hash);
+	return std::to_string(hash);
 }
 
 string pMT::hash_2(string key)
@@ -162,7 +167,7 @@ string pMT::hash_2(string key)
 		}
 	}
 
-	return intToHex(hash);
+	return std::to_string(hash);
 }
 
 string pMT::hash_3(string key)
@@ -189,7 +194,7 @@ string pMT::hash_3(string key)
 		hash &= ~x;
 	}
 
-	return intToHex(hash);
+	return std::to_string(hash);
 }
 
 bool operator ==(const pMT& lhs, const pMT& rhs)
@@ -200,7 +205,11 @@ bool operator ==(const pMT& lhs, const pMT& rhs)
 * @return true if equal, false otherwise
 */
 {
-	return operator==(lhs, rhs);
+	if (lhs == rhs)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool operator !=(const pMT& lhs, const pMT& rhs)
@@ -211,7 +220,11 @@ bool operator !=(const pMT& lhs, const pMT& rhs)
 * @return true if not equal, false otherwise
 */
 {
-	return operator!=(lhs, rhs);
+	if (lhs != rhs)
+	{
+		return true;
+	}
+	return false;
 }
 
 pMT operator ^=(const pMT& lhs, const pMT& rhs)
@@ -222,7 +235,11 @@ pMT operator ^=(const pMT& lhs, const pMT& rhs)
 * @return true if not equal, false otherwise
 */
 {
-	return operator^=(lhs, rhs);
+	if (lhs != rhs)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -234,7 +251,8 @@ std::ostream& operator <<(std::ostream& out, const pMT& p)
 * @return a tree to the screen
 */
 {
-	return operator<<(out, p);
+	out << p.myMerkle;
+	return out;
 }
 
 

@@ -26,6 +26,7 @@ private:
 	
 	int numberNodes;
 	int height;
+	int numberOfOperations;
 	vector<string> getData() const;
 	void getData(vector<string> &, const treeNode *) const;
 	vector<int> getTime() const;
@@ -45,6 +46,8 @@ public:
 	int insert(string, int);
 
 	int find(string);
+
+	int numOperations();
 
 	int find2(const string data, treeNode * subtree, bool & temp2, bool);
 

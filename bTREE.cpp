@@ -85,6 +85,11 @@ int bTREE::find(string data)
 	return find2(data, tree, temp, true);
 }
 
+int bTREE::numOperations()
+{
+	return numberOfOperations;
+}
+
 int bTREE::find2(const string data, treeNode * subtree, bool &temp2, bool)
 {
 	int temp = 0;
