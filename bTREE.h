@@ -1,10 +1,13 @@
 #pragma once
+#ifndef BTREE_H
+#define BTREE_H
 #include <string>
 #include <queue>
 using namespace std;
 
 class bTREE
 {
+protected:
 	struct treeNode {
 		string data;
 		int time;
@@ -13,13 +16,14 @@ class bTREE
 	};
 	
 	queue <treeNode*> queueNode;
-
+    treeNode * tree;
+	string entry;
 private:
 	//some data structure to hold your treeNodes together ...
 	//DATASTUCTURE treeNodes tree;
 	//any helper private variables you need
-	string entry;
-	treeNode * tree;
+	
+	
 	int numberNodes;
 	int height;
 	vector<string> getData() const;
@@ -52,3 +56,4 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
 
 };
+#endif

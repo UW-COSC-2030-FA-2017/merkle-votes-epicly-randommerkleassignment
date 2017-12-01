@@ -1,6 +1,4 @@
 #include "pMT.h"
-#include "bTREE.h"
-#include "bTREE.cpp"
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -36,7 +34,27 @@ int pMT::insert(string vote, int time)
 */
 
 {
-	myMerkle.insert(vote, time);
+	treeNode * A = new treeNode();
+	A->data = vote;
+	A->time = time;
+	A->left == NULL;
+	A->right == NULL;
+	if (tree == NULL)
+	{
+		tree = A;
+		queueNode.push(A);
+	}
+	else if (queueNode.front()->left == NULL)
+	{
+		queueNode.front()->left == A;
+		queueNode.push(A);
+	}
+	else if (queueNode.front()->right == NULL)
+	{
+		queueNode.front()->right == A;
+		queueNode.push(A);
+		queueNode.pop();
+	}
 	return 1;
 }
 
@@ -86,6 +104,15 @@ string pMT::locateHash(string mhash)
 string pMT::locate(string)
 {
 	return string();
+}
+
+string pMT::getTreeData()
+{
+	if (tree != NULL)
+	{
+		return tree->data;
+	}
+	return "";
 }
 
 

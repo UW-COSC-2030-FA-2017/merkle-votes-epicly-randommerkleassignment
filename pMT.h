@@ -4,11 +4,12 @@
 #include "bTREE.h"
 #include <string>
 using namespace std;
+using std::string;
 class pMT : public bTREE
 {
 private:
 	int selectedHash;
-	bTREE myMerkle;
+	//bTREE myMerkle;
 
 	string hash_1(string);
 	string hash_2(string);
@@ -28,7 +29,6 @@ public:
 	pMT(int);
 	~pMT();
 
-	bTREE myMerkle;
 	int insert(string, int);
 
 	int find(string);
@@ -39,7 +39,7 @@ public:
 	string locateHash(string mhash);
 
 	string locate(string);
-
+	string getTreeData();
 	friend bool operator==(const pMT& lhs, const pMT& rhs);
 
 	friend bool operator!=(const pMT& lhs, const pMT& rhs);
