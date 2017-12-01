@@ -1,4 +1,13 @@
 #include "pMT.h"
+#include "bTREE.h"
+#include "bTREE.cpp"
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+using std::sort;
+using std::vector;
+using std::cout;
 
 pMT::pMT(int hashSelect)
 /**
@@ -7,6 +16,7 @@ pMT::pMT(int hashSelect)
 * @return
 */
 {
+	selectedHash = hashSelect;
 }
 
 pMT::~pMT()
@@ -26,10 +36,31 @@ int pMT::insert(string vote, int time)
 */
 
 {
-	return 0;
+	treeNode * A = new treeNode();
+	A->data = data;
+	A->time = time;
+	A->left == NULL;
+	A->right == NULL;
+	if (tree == NULL)
+	{
+		tree = A;
+		queueNode.push(A);
+	}
+	else if (queueNode.front()->left == NULL)
+	{
+		queueNode.front()->left == A;
+		queueNode.push(A);
+	}
+	else if (queueNode.front()->right == NULL)
+	{
+		queueNode.front()->right == A;
+		queueNode.push(A);
+		queueNode.pop();
+	}
+	return 1;
 }
 
-int pMT::find(string)
+int pMT::find(string data)
 /**
 * @brief given a vote, timestamp, and hash function, does this vote exist in the tree?
 * @param vote, a string
@@ -38,7 +69,8 @@ int pMT::find(string)
 * @return 0 if not found, else number of opperations required to find the matching vote
 */
 {
-	return 0;
+	bool temp = false;
+	return find2(data, tree, temp, true);
 }
 
 int pMT::findHash(string mhash)
@@ -48,7 +80,7 @@ int pMT::findHash(string mhash)
 * @return 0 if not found, else number of opperations required to find the matching hash
 */
 {
-	return 0;
+	return find(mhash);
 }
 
 
@@ -59,7 +91,7 @@ string pMT::locateData(string vote)
 * @return sequence of L's and R's comprising the movement to the leaf node; else return a dot '.'
 */
 {
-	return vote;
+	return locate(vote);
 }
 
 string pMT::locateHash(string mhash)
@@ -69,7 +101,7 @@ string pMT::locateHash(string mhash)
 * @return sequence of L's and R's comprising the movement to the hash node, ; else return a dot '.'
 */
 {
-	return mhash;
+	return locate(mhash);
 }
 
 string pMT::locate(string)
@@ -86,7 +118,15 @@ string pMT::hash_1(string key)
 * @return a hash of the key
 */
 {
-	return key;
+	unsigned int hash = 1315423911;
+	unsigned int i = 0;
+	const char* str = key.c_str();
+	for (i = 0; i < key.length(); i++)
+	{
+		hash ^= ((hash << 5) + (*str) + (hash >> 2));
+	}
+
+	return intToHex(hash);
 }
 
 string pMT::hash_2(string key)
@@ -96,7 +136,27 @@ string pMT::hash_2(string key)
 * @return a hash of the key
 */
 {
-	return key;
+	const unsigned int BitsInUnsignedInt = (unsigned int)(sizeof(unsigned int) * 8);
+	const unsigned int ThreeQuarters = (unsigned int)((BitsInUnsignedInt * 3) / 4);
+	const unsigned int OneEighth = (unsigned int)(BitsInUnsignedInt / 8);
+	const unsigned int HighBits =
+		(unsigned int)(0xFFFFFFFF) << (BitsInUnsignedInt - OneEighth);
+	unsigned int hash = 0;
+	unsigned int test = 0;
+	unsigned int i = 0;
+	const char* str = key.c_str();
+
+	for (i = 0; i < key.length(); ++str, ++i)
+	{
+		hash = (hash << OneEighth) + (*str);
+
+		if ((test = hash & HighBits) != 0)
+		{
+			hash = ((hash ^ (test >> ThreeQuarters)) & (~HighBits));
+		}
+	}
+
+	return intToHex(hash);
 }
 
 string pMT::hash_3(string key)
@@ -106,7 +166,24 @@ string pMT::hash_3(string key)
 * @return a hash of the key
 */
 {
-	return key;
+	unsigned int hash = 0;
+	unsigned int x = 0;
+	unsigned int i = 0;
+	const char* str = key.c_str();
+
+	for (i = 0; i < key.length(); ++str, ++i)
+	{
+		hash = (hash << 4) + (*str);
+
+		if ((x = hash & 0xF0000000L) != 0)
+		{
+			hash ^= (x >> 24);
+		}
+
+		hash &= ~x;
+	}
+
+	return intToHex(hash);
 }
 
 bool operator ==(const pMT& lhs, const pMT& rhs)
@@ -117,7 +194,7 @@ bool operator ==(const pMT& lhs, const pMT& rhs)
 * @return true if equal, false otherwise
 */
 {
-	return false;
+	return (lhs.tree->data == rhs.tree->data);
 }
 
 bool operator !=(const pMT& lhs, const pMT& rhs)

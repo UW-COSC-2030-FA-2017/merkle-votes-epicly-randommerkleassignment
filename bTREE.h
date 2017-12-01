@@ -11,15 +11,21 @@ class bTREE
 		treeNode * left;
 		treeNode * right;
 	};
-	queue <treeNode> queueNode;
+	
+	queue <treeNode*> queueNode;
 
 private:
 	//some data structure to hold your treeNodes together ...
 	//DATASTUCTURE treeNodes tree;
 	//any helper private variables you need
 	string entry;
-	treeNode * tree; 
-
+	treeNode * tree;
+	int numberNodes;
+	int height;
+	vector<string> getData() const;
+	void getData(vector<string> &, const treeNode *) const;
+	vector<int> getTime() const;
+	void getTime(vector<int> &, const treeNode *) const;
 public:
 	bTREE();
 	~bTREE();
@@ -28,18 +34,17 @@ public:
 
 	int dataInserted();
 	int numberOfNodes();
-	int size();
+	int size(treeNode * subtree);
 
-	int leaves(const bTREE * subtree);
+	int leaves(treeNode * subtree);
 
 	int insert(string, int);
 
 	int find(string);
 
+	int find2(const string data, treeNode * subtree, bool & temp2, bool);
+
 	string locate(string);
-
-	unsigned int Hash(string str);
-
 
 	friend bool operator==(const bTREE& lhs, const bTREE& rhs);
 	friend bool operator!=(const bTREE& lhs, const bTREE& rhs);
