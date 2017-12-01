@@ -4,7 +4,7 @@
 #include "bTREE.h"
 #include <string>
 using namespace std;
-class pMT
+class pMT : public bTREE
 {
 private:
 	int selectedHash;
@@ -28,7 +28,7 @@ public:
 	pMT(int);
 	~pMT();
 
-
+	bTREE myMerkle;
 	int insert(string, int);
 
 	int find(string);

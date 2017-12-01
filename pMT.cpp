@@ -36,27 +36,7 @@ int pMT::insert(string vote, int time)
 */
 
 {
-	treeNode * A = new treeNode();
-	A->data = data;
-	A->time = time;
-	A->left == NULL;
-	A->right == NULL;
-	if (tree == NULL)
-	{
-		tree = A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->left == NULL)
-	{
-		queueNode.front()->left == A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->right == NULL)
-	{
-		queueNode.front()->right == A;
-		queueNode.push(A);
-		queueNode.pop();
-	}
+	myMerkle.insert(vote, time);
 	return 1;
 }
 
@@ -69,8 +49,7 @@ int pMT::find(string data)
 * @return 0 if not found, else number of opperations required to find the matching vote
 */
 {
-	bool temp = false;
-	return find2(data, tree, temp, true);
+	return find(data);
 }
 
 int pMT::findHash(string mhash)
@@ -194,7 +173,7 @@ bool operator ==(const pMT& lhs, const pMT& rhs)
 * @return true if equal, false otherwise
 */
 {
-	return (lhs.tree->data == rhs.tree->data);
+	return operator==(lhs, rhs);
 }
 
 bool operator !=(const pMT& lhs, const pMT& rhs)
@@ -205,7 +184,7 @@ bool operator !=(const pMT& lhs, const pMT& rhs)
 * @return true if not equal, false otherwise
 */
 {
-	return false;
+	return operator!=(lhs, rhs);
 }
 
 pMT operator ^=(const pMT& lhs, const pMT& rhs)
@@ -216,7 +195,7 @@ pMT operator ^=(const pMT& lhs, const pMT& rhs)
 * @return true if not equal, false otherwise
 */
 {
-	return lhs;
+	return operator^=(lhs, rhs);
 }
 
 
@@ -228,7 +207,7 @@ std::ostream& operator <<(std::ostream& out, const pMT& p)
 * @return a tree to the screen
 */
 {
-	return out;
+	return operator<<(out, p);
 }
 
 
@@ -240,5 +219,5 @@ pMT operator ^(const pMT& lhs, const pMT& rhs)
 * @return a tree comprised of the right hand side tree nodes that are different from the left
 */
 {
-	return lhs;
+	return operator^(lhs, rhs);
 }
