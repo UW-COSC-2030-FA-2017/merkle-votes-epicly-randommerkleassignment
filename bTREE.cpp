@@ -30,11 +30,11 @@ int bTREE::numberOfNodes()
 
 int bTREE::size(treeNode * subtree)
 {
-	if (tree == NULL)
+	if (subtree == NULL)
 	{
 		return 0;
 	}
-	return(size(tree->left) + 1 + size(tree->right));
+	return(size(subtree->left) + 1 + size(subtree->right));
 }
 
 int bTREE::leaves(treeNode * subtree)
@@ -56,58 +56,23 @@ int bTREE::leaves(treeNode * subtree)
 
 int bTREE::insert(string data, int time)
 {
-	numberOfOperations = numberOfOperations + 1;
-	if (numberOfNodes() > 0)
+	treeNode * K = new treeNode();
+	K->data = data;
+	K->left = NULL;
+	K->right = NULL;
+	if (queueNode.front()->left == NULL)
 	{
-		queueNode.push(tree);
+		queueNode.front()->left = K;
+		queueNode.push(K);
 		numberOfOperations = numberOfOperations + 1;
-		while (!queueNode.empty()) {
-			treeNode * temp = queueNode.front();
-			queueNode.pop();
-			numberOfOperations = numberOfOperations + 2;
-
-			if (!temp->left) {
-				treeNode * leftNode = new treeNode();
-				treeNode * rightNode = new treeNode();
-				leftNode->data = temp->data;
-				leftNode->time = temp->time;
-				leftNode->leaf = true;
-				leftNode->left = NULL;
-				leftNode->right = NULL;
-				rightNode->data = data;
-				rightNode->time = time;
-				rightNode->left = NULL;
-				rightNode->right = NULL;
-				rightNode->leaf = true;
-				temp->data = "parent";
-				temp->time = 666;
-				temp->left = leftNode;
-				temp->right = rightNode;
-				temp->leaf = false;
-				numberOfOperations = numberOfOperations + 17;
-				break;
-			}
-			else
-			{
-				numberOfOperations = numberOfOperations + 2;
-				queueNode.push(temp->left);
-				queueNode.push(temp->right);
-			}
-		}
 	}
-	else
+	else if (queueNode.front()->right == NULL)
 	{
-		numberOfOperations = numberOfOperations + 7;
-		treeNode * temp = new treeNode();
-		temp->data = data;
-		temp->time = time;
-		temp->left = NULL;
-		temp->right = NULL;
-		temp->leaf = true;
-		tree = temp;
+		queueNode.front()->right = K;
+		queueNode.pop();
+		numberOfOperations = numberOfOperations + 1;
 	}
-
-	return true;
+	return 1;
 }
 
 

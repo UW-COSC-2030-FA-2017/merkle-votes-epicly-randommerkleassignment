@@ -37,6 +37,7 @@ int pMT::insert(string vote, int time)
 {
 	myMerkle.insert(vote, time);
 	return myMerkle.dataInserted();
+	queueNode.pop();
 }
 
 int pMT::find(string data)
@@ -97,7 +98,7 @@ string pMT::getTreeData()
 	{
 		return tree->data;
 	}
-	return "";
+	return "Tree is Empty";
 }
 
 
