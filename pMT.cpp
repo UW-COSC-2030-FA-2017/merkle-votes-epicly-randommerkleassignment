@@ -36,8 +36,20 @@ int pMT::insert(string vote, int time)
 
 {
 	myMerkle.insert(vote, time);
+	int hashLoc = -1;
+	for (int i = 0; i < vectorNode.size(); i++)
+	{
+		if (vectorNode[i].leaf == false)
+			hashLoc = i;
+	}
+	if (hashLoc != -1)
+	{
+		string left = getHash(selectedHash, vectorNode[hashLoc].left->data);
+		string right = getHash(selectedHash, vectorNode[hashLoc].right->data);
+		vectorNode[hashLoc].data = getHash(selectedHash, left + right);
+	}
+
 	return myMerkle.dataInserted();
-	queueNode.pop();
 }
 
 int pMT::find(string data)
@@ -77,6 +89,18 @@ string pMT::locateData(string vote)
 	return myMerkle.locate(vote);
 }
 
+string pMT::getHash(int num, string data)
+{
+	string hashed = "";
+	if (num == 1)
+		hashed = hash_1(data);
+	if (num == 2)
+		hashed = hash_2(data);
+	if (num == 3)
+		hashed = hash_3(data);
+	return hashed;
+}
+
 string pMT::locateHash(string mhash)
 /**
 * @brief Function takes a hash and returns the sequence of (L)eft and (R)ight moves to get to that node starting from root.
@@ -94,11 +118,11 @@ string pMT::locate(string)
 
 string pMT::getTreeData()
 {
-	if (tree != NULL)
-	{
-		return tree->data;
-	}
-	return "Tree is Empty";
+	//if (vectorNode.size() != 0)
+	//{
+	return myMerkle.
+	//}
+	//return "";
 }
 
 

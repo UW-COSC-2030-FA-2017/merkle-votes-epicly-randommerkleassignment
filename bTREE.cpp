@@ -15,7 +15,7 @@ bTREE::~bTREE()
 
 void bTREE::destroy(bTREE * & subtree)
 {
-	
+
 }
 
 int bTREE::dataInserted()
@@ -56,23 +56,43 @@ int bTREE::leaves(treeNode * subtree)
 
 int bTREE::insert(string data, int time)
 {
-	treeNode * K = new treeNode();
-	K->data = data;
-	K->left = NULL;
-	K->right = NULL;
-	if (queueNode.front()->left == NULL)
+	if (vectorNode.empty())
 	{
-		queueNode.front()->left = K;
-		queueNode.push(K);
-		numberOfOperations = numberOfOperations + 1;
+		treeNode temp;
+		temp.data = data;
+		temp.time = time;
+		temp.leaf = true;
+		vectorNode.emplace_back(temp);
+		return 0;
 	}
-	else if (queueNode.front()->right == NULL)
+	int find = -1;
+	for (int i = 0; i < vectorNode.size(); i++)
 	{
-		queueNode.front()->right = K;
-		queueNode.pop();
-		numberOfOperations = numberOfOperations + 1;
+		if (vectorNode[i].leaf == true)
+		{
+			find = i;
+			break;
+		}
 	}
-	return 1;
+	treeNode temp1;
+	temp1.data = vectorNode[find].data;
+	temp1.time = vectorNode[find].time;
+	temp1.leaf = vectorNode[find].leaf;
+	
+	treeNode temp2;
+	temp2.data = data;
+	temp2.time = time;
+	temp2.leaf = true;
+
+	vectorNode.emplace_back(temp1);
+	vectorNode.emplace_back(temp2);
+	
+	vectorNode[find].left = &vectorNode[find * 2 + 1];
+	vectorNode[find].right = &vectorNode[find * 2 + 2];
+	vectorNode[find].leaf = false;
+
+
+	return 0;
 }
 
 
@@ -96,13 +116,13 @@ int bTREE::find2(const string data, treeNode * subtree, bool &temp2, bool)
 			if (subtree->left != NULL) temp += find2(data, subtree->left, temp2, false);
 			if (subtree->right != NULL) temp += find2(data, subtree->right, temp2, false);
 		}
-		else temp2 = true;			
-		if (!temp2 && tree) 
+		else temp2 = true;
+		if (!temp2 && tree)
 		{
 			temp = 0;
 		}
 	}
-    return temp;
+	return temp;
 }
 
 string bTREE::locate(string)

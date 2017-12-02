@@ -15,15 +15,16 @@ protected:
 		treeNode * right;
 		bool leaf;
 	};
-	
+
 	queue <treeNode*> queueNode;
-    treeNode * tree;
+	vector <treeNode> vectorNode;
+	treeNode * tree;
 	string entry;
 private:
 	//some data structure to hold your treeNodes together ...
 	//DATASTUCTURE treeNodes tree;
 	//any helper private variables you need
-	
+
 	int numberNodes;
 	int height;
 	int numberOfOperations;
@@ -36,6 +37,7 @@ public:
 	~bTREE();
 
 	static void destroy(bTREE * & subtree);
+
 
 	int dataInserted();
 	int numberOfNodes();

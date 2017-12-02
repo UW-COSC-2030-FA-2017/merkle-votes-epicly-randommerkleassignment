@@ -15,7 +15,7 @@ private:
 	string hash_1(string);
 	string hash_2(string);
 	string hash_3(string);
-	
+
 
 
 public:
@@ -28,16 +28,8 @@ public:
 	int findHash(string);
 
 	string locateData(string vote);
-
+	string getHash(int num, string data);
 	string locateHash(string mhash);
-    int StringToInt(string x)
-	{
-		string s = x;
-		stringstream temp(s);
-		int y = 0;
-		temp >> y;
-		return y;
-	}
 	string locate(string);
 	string getTreeData();
 	friend bool operator==(const pMT& lhs, const pMT& rhs);
