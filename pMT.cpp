@@ -35,28 +35,8 @@ int pMT::insert(string vote, int time)
 */
 
 {
-	treeNode * A = new treeNode();
-	A->data = vote;
-	A->time = time;
-	A->left = NULL;
-	A->right = NULL;
-	if (tree == NULL)
-	{
-		tree = A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->left == NULL)
-	{
-		queueNode.front()->left = A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->right == NULL)
-	{
-		queueNode.front()->right = A;
-		queueNode.push(A);
-		queueNode.pop();
-	}
-	return 1;
+	myMerkle.insert(vote, time);
+	return myMerkle.dataInserted();
 }
 
 int pMT::find(string data)
