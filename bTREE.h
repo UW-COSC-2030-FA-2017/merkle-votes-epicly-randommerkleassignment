@@ -13,6 +13,7 @@ protected:
 		int time;
 		treeNode * left;
 		treeNode * right;
+		bool leaf;
 	};
 	
 	queue <treeNode*> queueNode;
@@ -22,7 +23,6 @@ private:
 	//some data structure to hold your treeNodes together ...
 	//DATASTUCTURE treeNodes tree;
 	//any helper private variables you need
-	
 	
 	int numberNodes;
 	int height;

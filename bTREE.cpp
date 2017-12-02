@@ -1,5 +1,6 @@
 #include "bTREE.h"
 #include <queue>
+#include <math.h>
 // to_string
 //look at descriptions in pMT.h for guidance on what you might need for these function to actually do
 bTREE::bTREE()
@@ -55,29 +56,61 @@ int bTREE::leaves(treeNode * subtree)
 
 int bTREE::insert(string data, int time)
 {
-	treeNode * A = new treeNode();
-	A->data = data;
-	A->time = time;
-	A->left == NULL;
-	A->right == NULL;
-	if (tree == NULL)
-	{
-		tree = A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->left == NULL)
-	{
-		queueNode.front()->left == A;
-		queueNode.push(A);
-	}
-	else if (queueNode.front()->right == NULL)
-	{
-		queueNode.front()->right == A;
-		queueNode.push(A);
-		queueNode.pop();
-	}
 	return 1;
+	numberOfOperations = numberOfOperations + 1;
+	if (numberOfNodes() > 0)
+	{
+		queueNode.push(tree);
+		numberOfOperations = numberOfOperations + 1;
+		while (!queueNode.empty()) {
+			treeNode * temp = queueNode.front();
+			queueNode.pop();
+			numberOfOperations = numberOfOperations + 2;
+
+			if (!temp->left) {
+				treeNode * leftNode = new treeNode();
+				treeNode * rightNode = new treeNode();
+				leftNode->data = temp->data;
+				leftNode->time = temp->time;
+				leftNode->leaf = true;
+				leftNode->left = NULL;
+				leftNode->right = NULL;
+				rightNode->data = data;
+				rightNode->time = time;
+				rightNode->left = NULL;
+				rightNode->right = NULL;
+				rightNode->leaf = true;
+				temp->data = "parent";
+				temp->time = 666;
+				temp->left = leftNode;
+				temp->right = rightNode;
+				temp->leaf = false;
+				numberOfOperations = numberOfOperations + 17;
+				break;
+			}
+			else
+			{
+				numberOfOperations = numberOfOperations + 2;
+				queueNode.push(temp->left);
+				queueNode.push(temp->right);
+			}
+		}
+	}
+	else
+	{
+		numberOfOperations = numberOfOperations + 7;
+		treeNode * temp = new treeNode();
+		temp->data = data;
+		temp->time = time;
+		temp->left = NULL;
+		temp->right = NULL;
+		temp->leaf = true;
+		tree = temp;
+	}
+
+	return true;
 }
+
 
 int bTREE::find(string data)
 {

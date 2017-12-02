@@ -15,15 +15,7 @@ private:
 	string hash_1(string);
 	string hash_2(string);
 	string hash_3(string);
-	template< typename T >
-	int StringToInt(string x)
-	{
-		string s = x;
-		stringstream temp(s);
-		int y = 0;
-		temp >> y;
-		return y;
-	}
+	
 
 
 public:
@@ -38,7 +30,14 @@ public:
 	string locateData(string vote);
 
 	string locateHash(string mhash);
-
+    int StringToInt(string x)
+	{
+		string s = x;
+		stringstream temp(s);
+		int y = 0;
+		temp >> y;
+		return y;
+	}
 	string locate(string);
 	string getTreeData();
 	friend bool operator==(const pMT& lhs, const pMT& rhs);
