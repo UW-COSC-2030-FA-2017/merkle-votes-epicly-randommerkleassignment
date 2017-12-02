@@ -56,7 +56,6 @@ int bTREE::leaves(treeNode * subtree)
 
 int bTREE::insert(string data, int time)
 {
-	return 1;
 	numberOfOperations = numberOfOperations + 1;
 	if (numberOfNodes() > 0)
 	{
