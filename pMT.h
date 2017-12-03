@@ -15,8 +15,8 @@ private:
 	string hash_1(string);
 	string hash_2(string);
 	string hash_3(string);
-
-
+	int find2(string vote, int time, treeNode * subtree, bool found);
+	int findHash2(string hash, treeNode * subtree, bool found);
 
 public:
 	pMT(int);
@@ -24,8 +24,9 @@ public:
 
 	int insert(string, int);
 
-	int find(string);
+	int find(string vote, int time, int hashSelect);
 	int findHash(string);
+	
 
 	string locateData(string vote);
 	string getHash(int num, string data);

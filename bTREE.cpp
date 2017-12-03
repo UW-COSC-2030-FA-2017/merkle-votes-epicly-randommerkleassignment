@@ -5,7 +5,7 @@
 //look at descriptions in pMT.h for guidance on what you might need for these function to actually do
 bTREE::bTREE()
 {
-	tree == NULL;
+	tree = NULL;
 	int height = 0;
 }
 
@@ -56,6 +56,7 @@ int bTREE::leaves(treeNode * subtree)
 
 int bTREE::insert(string data, int time)
 {
+	int operations = 0;
 	if (vectorNode.empty())
 	{
 		treeNode temp;
@@ -63,69 +64,79 @@ int bTREE::insert(string data, int time)
 		temp.time = time;
 		temp.leaf = true;
 		vectorNode.emplace_back(temp);
+		operations += 5;
 		return 0;
 	}
 	int find = -1;
+	operations++;
 	for (int i = 0; i < vectorNode.size(); i++)
 	{
 		if (vectorNode[i].leaf == true)
 		{
 			find = i;
+			operations+=3;
 			break;
 		}
+		operations++;
 	}
 	treeNode temp1;
 	temp1.data = vectorNode[find].data;
 	temp1.time = vectorNode[find].time;
 	temp1.leaf = vectorNode[find].leaf;
+	operations += 6;
 	
 	treeNode temp2;
 	temp2.data = data;
 	temp2.time = time;
 	temp2.leaf = true;
+	operations += 3;
 
 	vectorNode.emplace_back(temp1);
 	vectorNode.emplace_back(temp2);
-	
+	operations += 2;
+
 	vectorNode[find].left = &vectorNode[find * 2 + 1];
 	vectorNode[find].right = &vectorNode[find * 2 + 2];
 	vectorNode[find].leaf = false;
+	operations += 8;
 
+	return operations;
+}
 
-	return 0;
+int bTREE::find(string vote)
+{
+	int operations = find2(vote, tree, false);
+	return operations;
 }
 
 
-int bTREE::find(string data)
+int bTREE::find2(const string vote, treeNode * subtree, bool found)
 {
-	bool temp = false;
-	return find2(data, tree, temp, true);
-}
-
-int bTREE::numOperations()
-{
-	return numberOfOperations;
-}
-
-int bTREE::find2(const string data, treeNode * subtree, bool &temp2, bool)
-{
-	int temp = 0;
-	if (!temp2 && subtree != NULL) {
-		temp++;
-		if (data != subtree->data) {
-			if (subtree->left != NULL) temp += find2(data, subtree->left, temp2, false);
-			if (subtree->right != NULL) temp += find2(data, subtree->right, temp2, false);
-		}
-		else temp2 = true;
-		if (!temp2 && tree)
+	int operations = 0;
+	if (vectorNode.size() == 0)
+		return 0;
+	
+	if (subtree != NULL)
+	{
+		operations++;
+		if (vote != subtree->data)
 		{
-			temp = 0;
+			if (subtree->left != NULL)
+				operations += find2(vote, subtree->left, false);
+			if (subtree->right != NULL)
+				operations += find2(vote, subtree->right, false);
+		}
+		else
+			found = true;
+		if (found != true)
+		{
+			operations = 0;
 		}
 	}
-	return temp;
+	return operations;
 }
 
-string bTREE::locate(string)
+string bTREE::locate(string )
 {
 	return string();
 }
@@ -133,29 +144,30 @@ string bTREE::locate(string)
 
 bool operator==(const bTREE & lhs, const bTREE & rhs)
 {
-	bool result(true);
-	if (lhs.numberNodes != rhs.numberNodes) result = false;
-	else {
-		vector<string> left_data = lhs.getData();
-		vector<string> right_data = rhs.getData();
-		sort(left_data.begin(), left_data.end());
-		sort(right_data.begin(), right_data.end());
-
-		for (int i = 0; i < left_data.size(); i++) {
-			if (left_data[i] != right_data[i]) {
-				result = false;
-				i = left_data.size() - 1;
-			}
+	if (lhs.vectorNode.size() > rhs.vectorNode.size())
+		return false;
+	else if (lhs.vectorNode.size() < rhs.vectorNode.size())
+		return false;
+	else
+	{
+		for (int i = 0; i < lhs.vectorNode.size(); i++)
+		{
+			if (lhs.vectorNode[i].data != rhs.vectorNode[i].data)
+				return false;
+			if (lhs.vectorNode[i].time != rhs.vectorNode[i].time)
+				return false;
 		}
 	}
-
-	return result;
+	return true;
 }
 
 bool operator!=(const bTREE & lhs, const bTREE & rhs)
 {
-	return !(lhs == rhs);
+	if (!(lhs == rhs))
+		return true;
+	return false;
 }
+
 
 std::ostream & operator<<(std::ostream & out, const bTREE & p)
 {

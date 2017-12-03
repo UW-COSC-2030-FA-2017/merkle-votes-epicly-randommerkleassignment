@@ -16,65 +16,53 @@ int main(int argc, char **argv)
 {
 	string candidate;
 	string timeStamp;
-
 	string voteData1;
 	string voteData2;
-	string temp;
-	ifstream file1("test.txt");
+	ifstream file1;
 	ifstream file2;
 	pMT vote1(1);
 	pMT vote2(2);
-	while (getline(file1, voteData1))
-	{
-		int time = stringToInt(timeStamp);
-		vote1.insert(candidate, time);
-		cout << voteData1 ;
-	}
-	//cout << "Hello World" << endl;
-	//file1.open("test.txt");
-	//file2.open("test2.txt");
-	/*if (file1.is_open())
+	file1.open("test1.txt");
+	file2.open("test2.txt");
+	if (file1.is_open())
 	{
 		getline(file1, voteData1);
 		voteData1 += '\n';
-		while (getline(file1, voteData1))
+		while (!file1.eof())
 		{
 			getline(file1, candidate, '\t');
 			getline(file1, timeStamp);
 			voteData1 = voteData1 + candidate + '\t' + timeStamp + '\n';
 			int time = stringToInt(timeStamp);
-			//vote1.insert(candidate, time);
-			cout << voteData1 << endl;
-			if (file1.eof())
-			{
-				file1.close();
-			}
+			vote1.insert(candidate, time);
 		}
-	}*/
-
-	/*if (file2.is_open())
-	{
-	getline(file2, voteData2);
-	voteData2 += '\n';
-	while (!file2.eof())
-	{
-	getline(file2, candidate, '\t');
-	getline(file2, timeStamp);
-	voteData2 = voteData2 + candidate + '\t' + timeStamp + '\n';
-	int time = stringToInt(timeStamp);
-	vote2.insert(candidate, time);
 	}
-	}*/
-	cout << vote1.getTreeData();
-	//if (voteData1 == voteData2)
-	//	cout << "Validated";
-	//else
-	//	cout << "Not Validated";
+	
+	if (file2.is_open())
+	{
+		getline(file2, voteData2);
+		voteData2 += '\n';
+		while (!file2.eof())
+		{
+			getline(file2, candidate, '\t');
+			getline(file2, timeStamp);
+			voteData2 = voteData2 + candidate + '\t' + timeStamp + '\n';
+			int time = stringToInt(timeStamp);
+			vote2.insert(candidate, time);
+		}
+	}
+	cout << vote1.getTreeData() << endl;
+	cout << vote2.getTreeData() << endl;
+	if (vote1 == vote2)
+		cout << "Validated";
+	else
+		cout << "Not Validated";
 
+	//for testing code
 	while (1 > 0)
 	{
 
 	}
-
+	
 	return 0;
 }

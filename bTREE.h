@@ -15,20 +15,17 @@ protected:
 		treeNode * right;
 		bool leaf;
 	};
-	treeNode * tree;
 	string entry;
 private:
-	//some data structure to hold your treeNodes together ...
-	//DATASTUCTURE treeNodes tree;
-	//any helper private variables you need
 	vector <treeNode> vectorNode;
+	treeNode * tree;
 	int numberNodes;
 	int height;
-	int numberOfOperations;
 	vector<string> getData() const;
 	void getData(vector<string> &, const treeNode *) const;
 	vector<int> getTime() const;
 	void getTime(vector<int> &, const treeNode *) const;
+	int find2(const string vote, treeNode * subtree, bool found);
 public:
 	bTREE();
 	~bTREE();
@@ -47,17 +44,12 @@ public:
 
 	int insert(string, int);
 
-	int find(string);
-
-	int numOperations();
-
-	int find2(const string data, treeNode * subtree, bool & temp2, bool);
+	int find(string vote);
 
 	string locate(string);
 
 	friend bool operator==(const bTREE& lhs, const bTREE& rhs);
 	friend bool operator!=(const bTREE& lhs, const bTREE& rhs);
-
 	friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
 
 };

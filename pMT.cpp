@@ -35,24 +35,30 @@ int pMT::insert(string vote, int time)
 */
 
 {
-	myMerkle.insert(vote, time);
+	int operations = myMerkle.insert(vote, time);
 	int hashLoc = -1;
+	operations++;
 	for (int i = 0; i < (*myMerkle.getVec()).size(); i++)
 	{
 		if ((*myMerkle.getVec())[i].leaf == false)
+		{
 			hashLoc = i;
+			operations+=2;
+		}
+		operations++;
 	}
 	if (hashLoc != -1)
 	{
 		string left = getHash(selectedHash, (*myMerkle.getVec())[hashLoc].left->data);
 		string right = getHash(selectedHash, (*myMerkle.getVec())[hashLoc].right->data);
 		(*myMerkle.getVec())[hashLoc].data = getHash(selectedHash, left + right);
+		operations += 10;
 	}
 
-	return myMerkle.dataInserted();
+	return operations;
 }
 
-int pMT::find(string data)
+int pMT::find(string vote, int time, int hashSelect)
 /**
 * @brief given a vote, timestamp, and hash function, does this vote exist in the tree?
 * @param vote, a string
@@ -61,7 +67,34 @@ int pMT::find(string data)
 * @return 0 if not found, else number of opperations required to find the matching vote
 */
 {
-	return find(data);
+	int operations = find2(vote, time, &(*myMerkle.getVec()).front(), false);
+	return operations;
+}
+
+int pMT::find2(string vote, int time, treeNode * subtree, bool found)
+{
+	int operations = 0;
+	if ((*myMerkle.getVec()).size() == 0)
+		return 0;
+
+	if (subtree != NULL)
+	{
+		operations++;
+		if (vote != subtree->data || time != subtree->time)
+		{
+			if (subtree->left != NULL)
+				operations += find2(vote, time, subtree->left, false);
+			if (subtree->right != NULL)
+				operations += find2(vote, time, subtree->right, false);
+		}
+		else
+			found = true;
+		if (found != true)
+		{
+			operations = 0;
+		}
+	}
+	return operations;
 }
 
 int pMT::findHash(string mhash)
@@ -71,11 +104,34 @@ int pMT::findHash(string mhash)
 * @return 0 if not found, else number of opperations required to find the matching hash
 */
 {
-	if (myMerkle.find(mhash))
-	{
-		return myMerkle.numOperations();
-	}
+	int operations = findHash2(mhash, &(*myMerkle.getVec()).front(), false);
+	return operations;
+}
 
+int pMT::findHash2(string hash, treeNode * subtree, bool found)
+{
+	int operations = 0;
+	if ((*myMerkle.getVec()).size() == 0)
+		return 0;
+
+	if (subtree != NULL)
+	{
+		operations++;
+		if (hash != subtree->data)
+		{
+			if (subtree->left != NULL)
+				operations += findHash2(hash, subtree->left, false);
+			if (subtree->right != NULL)
+				operations += findHash2(hash, subtree->right, false);
+		}
+		else
+			found = true;
+		if (found != true)
+		{
+			operations = 0;
+		}
+	}
+	return operations;
 }
 
 
@@ -118,11 +174,9 @@ string pMT::locate(string)
 
 string pMT::getTreeData()
 {
-	//if (vectorNode.size() != 0)
-	//{
-	return(*myMerkle.getVec())[0].data;
-	//}
-	//return "";
+	if ((*myMerkle.getVec()).size() != 0)
+		return(*myMerkle.getVec())[0].data;
+	return "";
 }
 
 
@@ -210,7 +264,7 @@ bool operator ==(const pMT& lhs, const pMT& rhs)
 * @return true if equal, false otherwise
 */
 {
-	if (lhs == rhs)
+	if (lhs.myMerkle == rhs.myMerkle)
 	{
 		return true;
 	}
@@ -225,7 +279,7 @@ bool operator !=(const pMT& lhs, const pMT& rhs)
 * @return true if not equal, false otherwise
 */
 {
-	if (lhs != rhs)
+	if (lhs.myMerkle != rhs.myMerkle)
 	{
 		return true;
 	}
@@ -269,5 +323,24 @@ pMT operator ^(const pMT& lhs, const pMT& rhs)
 * @return a tree comprised of the right hand side tree nodes that are different from the left
 */
 {
-	return operator^(lhs, rhs);
+	pMT temp(rhs.selectedHash);
+	//This part doesn't compile which is why it isn't commented out.
+	/*if((*lhs.getVec).size() > (*rhs.getVec).size())
+		for (int i = 0; i > (*rhs.getVec).size(); i++)
+		{
+			if ((*rhs.getVec)[i].data != (*lhs.getVec)[i].data)
+				temp.insert((*rhs.getVec)[i].data, (*rhs.getVec)[i].time);
+		}
+	else
+	{
+		for (int i = 0; i > (*lhs.getVec).size(); i++)
+		{
+			if ((*rhs.getVec)[i].data != (*lhs.getVec)[i].data)
+				temp.insert((*rhs.getVec)[i].data, (*rhs.getVec)[i].time);
+		}
+		if ((*lhs.getVec).size() < (*rhs.getVec).size())
+			for (int i = (*lhs.getVec).size(); i < (*rhs.getVec).size(); i++)
+				temp.insert((*rhs.getVec)[i].data, (*rhs.getVec)[i].time);
+	}*/
+	return temp;
 }
