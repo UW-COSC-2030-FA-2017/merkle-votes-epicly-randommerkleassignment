@@ -37,16 +37,16 @@ int pMT::insert(string vote, int time)
 {
 	myMerkle.insert(vote, time);
 	int hashLoc = -1;
-	for (int i = 0; i < vectorNode.size(); i++)
+	for (int i = 0; i < (*myMerkle.getVec()).size(); i++)
 	{
-		if (vectorNode[i].leaf == false)
+		if ((*myMerkle.getVec())[i].leaf == false)
 			hashLoc = i;
 	}
 	if (hashLoc != -1)
 	{
-		string left = getHash(selectedHash, vectorNode[hashLoc].left->data);
-		string right = getHash(selectedHash, vectorNode[hashLoc].right->data);
-		vectorNode[hashLoc].data = getHash(selectedHash, left + right);
+		string left = getHash(selectedHash, (*myMerkle.getVec())[hashLoc].left->data);
+		string right = getHash(selectedHash, (*myMerkle.getVec())[hashLoc].right->data);
+		(*myMerkle.getVec())[hashLoc].data = getHash(selectedHash, left + right);
 	}
 
 	return myMerkle.dataInserted();
@@ -120,7 +120,7 @@ string pMT::getTreeData()
 {
 	//if (vectorNode.size() != 0)
 	//{
-	return myMerkle.
+	return(*myMerkle.getVec())[0].data;
 	//}
 	//return "";
 }
